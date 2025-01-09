@@ -22,6 +22,8 @@ RUN dpkg --add-architecture i386 && \
         libgmp-dev \
         lib32ncurses5 \
         vim \
+        libncurses5-dev \
+        wget \
     && rm -rf /var/lib/apt/lists/* \
     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
     && locale-gen
@@ -40,25 +42,47 @@ RUN tar -xf stk-1.3.6.tgz && \
 
 # Fix the Tcl configure by setting system explicitly
 WORKDIR /usr/src/app/stk/Tcl
-RUN  sed -i "s/system=MP-RAS-\`awk '{print \$3}' \/etc\/.relid'\`/system=Linux/" configure
+RUN sed -i "s/system=MP-RAS-\`awk '{print \$3}' \/etc\/.relid'\`/system=Linux/" configure
 
-# Change STk.init settings (step 9)
+# Change STk.init settings
 WORKDIR /usr/src/app/stk
 RUN sed -i 's|/usr/local/lib/slib/|/usr/local/lib/stk/slib/|' Lib/STk.init && \
     sed -i 's|/3.99.3/|/usr/local/lib/stk/1.3.6/|' Lib/STk.init
 
-# Modify gcc references in configure (step 10)
+# Modify gcc references in configure
 RUN sed -i 's|ac_cv_prog_ac_ct_CC="gcc"|ac_cv_prog_ac_ct_CC="gcc -m32"|' configure && \
     sed -i 's|if test "$CC" = "gcc" -a "$SH_CCFLAGS" != "" ; then|if test "$CC" = "gcc -m32" -a "$SH_CCFLAGS" != "" ; then|' configure
-
 
 # Configure and prepare for build
 RUN find . -type f -name configure -exec chmod +x {} \;
 RUN ./configure --prefix=/usr/local
 
-# Modify Makefile to use -m32 (step 12)
-RUN sed -i 's|^CC.*=.*gcc$|& -m32|' configure
+# Modify Makefile to use -m32
+RUN sed -i 's|^CC.*=.*gcc$|& -m32|' Makefile
 
-RUN make  && make install
+RUN make && make install
 
+# Install downgraded texinfo
+WORKDIR /usr/src/app
+RUN wget http://ftp.gnu.org/gnu/texinfo/texinfo-4.13.tar.gz && \
+    tar -zxvf texinfo-4.13.tar.gz && \
+    rm texinfo-4.13.tar.gz && \
+    cd texinfo-4.13 && \
+    ./configure && \
+    sed -i 's|LDFLAGS = @LDFLAGS@|LDFLAGS = "-L${PREFIX}/lib -lncurses"|' Makefile && \
+    make && make install
+
+# UCB Extensions setup
+WORKDIR /usr/src/app/ucb
+RUN ./configure --prefix=/usr/local && \
+    sed -i 's|MKDIR\t\t= @MKDIR@|MKDIR\t\t= /bin/mkdir|' stkdb/Makefile && \
+    make && make install
+
+
+# Finalize UCB extensions
+RUN mkdir -p /usr/local/lib/stk/slib/stkdb && \
+    cp /usr/src/app/ucb/stkdb/*.scm /usr/src/app/ucb/stkdb/stkdb.el /usr/local/lib/stk/slib/stkdb && \
+    stk-simply
+
+# To run UCB extension, run `stk -load load-simply`
 CMD ["/bin/bash"]
