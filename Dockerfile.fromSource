@@ -72,6 +72,9 @@ RUN wget http://ftp.gnu.org/gnu/texinfo/texinfo-4.13.tar.gz && \
     sed -i 's|LDFLAGS = @LDFLAGS@|LDFLAGS = "-L${PREFIX}/lib -lncurses"|' Makefile && \
     make && make install
 
+### FAILURE NOTE
+#### From this point down, the dockerfile is broken. I believe it has to do with the pkg dependencies not being the 
+###  actual correct ones necessary to build scheme and the ucb scheme extension
 # UCB Extensions setup
 WORKDIR /usr/src/app/ucb
 RUN ./configure --prefix=/usr/local && \
