@@ -1,5 +1,11 @@
 # Berkeley CS61a
 
+# How to run Scheme Via Docker
+1. Execute the docker image interactively
+`docker run -it cs61a-scheme`
+
+2. Run scheme in the docker container with the ucb extension loaded
+`stk -load load-simply`
 
 
 # Roadmap
