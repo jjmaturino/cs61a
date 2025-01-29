@@ -7,6 +7,11 @@
 2. Run scheme in the docker container with the ucb extension loaded
 `stk -load load-simply`
 
+3. Run docker image with files associated locally iteractievly
+`docker run -it -v $(pwd)/path/to/code:/code  cs61a-scheme`
+
+
+
 
 # Roadmap
 - Have repo be used for self study
