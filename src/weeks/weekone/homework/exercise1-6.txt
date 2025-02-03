@@ -1,0 +1,22 @@
+Since scheme evaluates using applicative ordering, the subexpressions of a combination must be evalutated before the actual combination expression gets resolved.
+
+In the instance of defining a **new-if** 
+` (define (new-if predicate
+		  then-clause
+		  else-clause)
+	(cond (predicate then-clause)
+	      (else else-clause))
+  )
+`
+
+The formal parameters **then-clause**, **else-clause**, and the predicate operator must be evaluated before
+the actual body of the procedure(function) defintion can be executed.
+
+Following the Subsitution Model, when calling sqrt-iter, we first evaluate the operands (guess and x).
+Then we evaluate the body of the procedure, subsituting the formal parameters with the associated values evaluated (arguements).
+
+This is a problem when any of the formal parameters of the procedure defintion are recursive in nature, as is in the case of  **sqrt-iter** defined in exercise 1.6.
+
+This causes an infinite loop because the else-clause is always evaluated, even when the evaluation isn't necessary.
+
+Thus, because of applicative evalution being recursive in nature, when the new-if is called inside of a recursive function, the result is an infinite loop (non-terminating).
