@@ -47,3 +47,34 @@
   )
 )
 
+; each iteration,
+; we grab the first value in the ds
+; 1
+; Then we recursively get the next value. Thus
+; 1 <
+; - 2
+; - - 3
+; - - - Nil
+
+; base case is st is nil
+; in each other case we 
+; A. Grab the first element
+; B. We compare it with the previous elements
+
+; Exercise #4
+(define (ordered? numbers)
+	(if (equal? numbers nil)
+	    #t
+	    (orderedhelper (first numbers) (bf numbers))
+	)
+)
+
+(define (orderedhelper cv numbers)
+  (if (equal? numbers nil)
+      #t
+      (if (<= cv (first numbers))
+	(orderedhelper (first numbers) (bf numbers))
+	#f
+      )
+  )
+)
