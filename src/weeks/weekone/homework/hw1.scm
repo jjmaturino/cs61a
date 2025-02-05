@@ -82,11 +82,11 @@
 ; Exercise #5
 (define (ends-e words)
   (cond ((equal? words nil) '())
-	((if (equal? (last (first words)) 'e)
+	(
+	 (if (equal? (last (first words)) 'e)
 	    (se (first words) (ends-e (bf words)))
 	    (se (ends-e (bf words)))
 	  )
-	 )
+	)
   )
-
 )
