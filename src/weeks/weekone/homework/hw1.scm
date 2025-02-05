@@ -90,3 +90,47 @@
 	)
   )
 )
+
+
+; Exercise #6
+; Benefits of treating or/and procedures as special forms decreases the potential number
+; of arguments that have to be 
+
+; takes a proceedure and check to see if it's a special form or not
+; special forms
+; if and is special only the first expression will be executed
+; else all the expressions listed under and will be executed
+(define (test-special-form)
+  ; var in local env
+  (define test-val 0)
+
+  (define (will-increment)
+    (set! test-val (+ test-val 1))
+      #t
+   )
+
+  ; Test AND
+  (display "Testing if AND is a special form: \n")
+  (set! test-val 0)
+  (and #f (will-increment))
+  (if (equal? test-val 1)
+      (display "AND is not a special form - evaluated all arguements")
+      (display "AND is a special form - only evaluted first argument")
+  )
+
+  (display "\n") ; formatting
+  (display "\n") ; formatting
+
+  ; Test OR
+  (display "Testing if OR is a special form: \n")
+  (set! test-val 0)
+  (or #t (will-increment))
+  (if (equal? test-val 1)
+      (display "OR is not a special form - evaluated all arguements")
+      (display "OR is a special form - only evaluated first arguement")
+  )
+
+
+  (display "\n") ; formatting
+)
+
