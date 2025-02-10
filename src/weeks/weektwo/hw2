@@ -1,0 +1,99 @@
+okay
+STk> (load "homework/hw2")
+okay
+STk> (trace isPrime?)
+okay
+STk> (isPrime? 3)
+.. -> isprime? with num = 3
+.. <- isprime? returns #t
+#t
+STk> (isPrime? 7)
+.. -> isprime? with num = 7
+.. <- isprime? returns #t
+#t
+STk> (isPrime? 10)
+.. -> isprime? with num = 10
+.. <- isprime? returns #f
+#f
+STk> (isPrime? 127)
+.. -> isprime? with num = 127
+.. <- isprime? returns #t
+#t
+STk> (isPrime? 2)
+.. -> isprime? with num = 2
+.. <- isprime? returns #f
+#f
+STk> (isPrime? 10)
+.. -> isprime? with num = 10
+.. <- isprime? returns #f
+#f
+STk> (isPrime? 0)
+.. -> isprime? with num = 0
+.. <- isprime? returns #t
+#t
+STk> (isPrime? 241)
+.. -> isprime? with num = 241
+.. <- isprime? returns #t
+#t
+STk> (isPrime? 243)
+.. -> isprime? with num = 243
+.. <- isprime? returns #t
+#t
+STk> (isPrime? 2)
+.. -> isprime? with num = 2
+.. <- isprime? returns #f
+#f
+STk> (load "homework/hw2")
+okay
+STk> (isPrime? 2)
+1
+STk> (isPrime? 1)
+1
+STk> (load "homework/hw2")
+okay
+STk> (isPrime? 1)
+#f
+STk> (isPrime? 2)
+#f
+STk> (load "homework/hw2")
+okay
+STk> (isPrime? 2)
+*** Error:
+    eval: bad function in : (#t)
+Current eval stack:
+__________________
+  0    (#t)
+STk> (load "homework/hw2")
+okay
+STk> (isPrime? 2)
+#t
+STk> clear
+
+*** Error:
+    unbound variable: clear
+Current eval stack:
+__________________
+  0    clear
+STk> (load "homework/hw2")
+okay
+STk> (isPrime? 2)
+#t
+STk> (isPrime? 3)
+#t
+STk> (isPrime? 4)
+#f
+STk> (isPrime? 243)
+#f
+STk> (isPrime? 241)
+#t
+STk> (primesum 10)
+87
+STk> (trace primesum)
+okay
+STk> (primesum 10)
+.. -> primesum with num = 10
+.. <- primesum returns 87
+87
+STk> (isPrime? 9)
+#f
+STk> 
