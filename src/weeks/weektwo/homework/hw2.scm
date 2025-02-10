@@ -71,3 +71,14 @@
 		
 (define (primesum num)(filtered-accumulate + 0 1 num sq increment isPrime?))
 
+(define GCD (lambda(x y)(
+			 if (equal? y 0)
+			    x
+			    (GCD y (remainder x y))
+			  ))
+ )
+
+(define isRelativePrime? (lambda(x y)(equal? (GCD x y) 1)))
+
+; relative prime product (rpp)
+(define (rpp num)(filtered-accumulate * 1 1 num identity increment (lambda(x)(isRelativePrime? num x))))
