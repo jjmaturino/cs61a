@@ -86,15 +86,16 @@
 
 ; 1.40
 (define dx 0.00001)
-(define tolerance 0.001)
+(define tolerance 0.00001)
 (define (deriv g)
   (lambda (x)
     (/ (- (g (+ x dx)) (g x))
        dx)))
 
-(define (fixed-point f first-guess)
-  (define (close-enough? v1 v2)
+(define (close-enough? v1 v2)
     (< (abs (- v1 v2)) tolerance))
+
+(define (fixed-point f first-guess)
   (define (try guess)
     (let ((next (f guess)))
       (if (close-enough? guess next)
@@ -137,10 +138,68 @@
   )
 )
 
-
-
 ; 1.41
+(define (double fn)(lambda(x)(fn(fn x))))
+; (
+;   (
+;     (double (double double))
+;      inc
+;   (
+;   5
+; )
+; = 21
 
 ; 1.43
+(define (compose f g)(lambda(x)(f(g x))))
+(define (repeatedhelper fn n a)
+   (
+    if (equal? n a)
+       fn
+       (compose fn (repeatedhelper fn n (increment a)))
+   )
+)
+
+(define (repeated fn n)
+  if (equal? n 0)
+      '()
+      (repeatedhelper fn n 1)
+)
 
 ; 1.46
+(define (iterative-improve validfn nextfn)
+  (define (helper guess)
+    (
+     if (validfn guess)
+      (nextfn guess) 
+      (helper (nextfn guess))
+     )
+   )
+
+  helper
+)
+
+
+; --- sqrt rewrite
+(define (average x y)(/ (+ x y) 2))
+(define (good-enough? guess x)
+  (
+   < (abs (- (sq guess) x)) tolerance
+   )
+)
+
+(define (improve guess x)
+ (
+   average guess (/ x guess)
+ )
+)
+
+(define (sqrt-iter x)
+  ((iterative-improve (lambda(guess)(good-enough? guess x)) (lambda(guess)(improve guess x))) 1.0)
+)
+
+
+; -- fixed-point rewrite
+(define (v2fixed-point f guess)
+  ((iterative-improve (lambda(x)(close-enough? x (f x))) (lambda(x)(f x))) guess)
+)
+
