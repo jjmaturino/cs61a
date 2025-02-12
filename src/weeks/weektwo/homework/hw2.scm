@@ -203,3 +203,14 @@
   ((iterative-improve (lambda(x)(close-enough? x (f x))) (lambda(x)(f x))) guess)
 )
 
+
+; Exercise #2
+(define (every fn l)
+  (if (empty? l)
+      '()
+      (se (fn (first l)) (every fn (bf l)))
+  )
+)
+
+
+; Exercise #3
