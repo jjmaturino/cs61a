@@ -214,3 +214,25 @@
 
 
 ; Exercise #3
+; (every (lambda (letter) (word letter letter)) 'purple) =(pp uu rr pp ll ee) 
+; (every (lambda (number) (if (even? number) (word number number) number)) 
+;   '( 781 5 76 909 23)) = (781 5 7676 909 2424)
+; (keep (lambda (letter) (member? letter 'aeiou)) 'bookkeeper) = ooeee
+; (keep (lambda (letter) (member? letter 'aeiou)) 'syzygy) = Error
+; (keep (lambda (wd) (member? 'e wd)) '(purple syzygy)) = (purple)
+
+; Extra for Experts
+
+; We need a wrapper lambda that keeps the scoope of the recursive function alive (in memory)
+; until it's completion
+
+ ((lambda (n)
+  ((lambda (recursiveFn)(recursiveFn recursiveFn n)) 
+    (lambda(fn x)
+      (if (= x 0)
+	1
+	(* x (fn fn (- x 1)))))))
+ 5
+)
+
+	
