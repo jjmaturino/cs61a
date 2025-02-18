@@ -65,7 +65,7 @@
   (define initialStart 0)
   (define helper (lambda(n d i)
 		   (
-		    if (not (< i zeroIndexedK))
+		    if (> i zeroIndexedK)
 		    (/ (n i) (d i)) ; n(k) / d(k)
 		    (/ (n i) (+ (d i) (helper n d (+ i 1)))) ; n(i) / d(i) + .... n(k)/d(k)
 		   )
@@ -79,17 +79,18 @@
 ; solved with via an iterative process
 (define (cont-frac-iter n d k)
    (define start 0)
+   (define zeroIndexedK (- k 1))
    (define initialSum 0)
    (define helper (lambda (result i)
      (
-      if (> i k)
+      if (< i 0)
 	 result
-	 (helper (/ (n i) (+ (d i) result)) (+ i 1))
+	 (helper (/ (n i) (+ (d i) result)) (- i 1))
      )
     )
    )
 
-   (helper initialSum start)
+   (helper initialSum zeroIndexedK)
 )
 
 
@@ -100,11 +101,11 @@
   (define (n i) 1.0)
   (define (d i)
     (
-     if (equal? (remainder (+ i 2) 3) 0)
+     if (equal? 0  (remainder (+ i 2) 3) )
         (* 2.0 (/ (+ i 2) 3))
 	1.0
     )
   )
   
-  (+ 2 (cont-frac n d k))
+  (+ 2 (cont-frac-iter n d k))
 )
