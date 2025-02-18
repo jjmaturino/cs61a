@@ -82,7 +82,7 @@
    (define initialSum 0)
    (define helper (lambda (result i)
      (
-      if (equal? i k)
+      if (> i k)
 	 result
 	 (helper (/ (n i) (+ (d i) result)) (+ i 1))
      )
@@ -94,5 +94,17 @@
 
 
 
-
 ; 1.38
+
+(define (euler-e k)
+  (define (n i) 1.0)
+  (define (d i)
+    (
+     if (equal? (remainder (+ i 2) 3) 0)
+        (* 2.0 (/ (+ i 2) 3))
+	1.0
+    )
+  )
+  
+  (+ 2 (cont-frac n d k))
+)
