@@ -8,7 +8,10 @@
 `stk -load load-simply`
 
 3. Run docker image with files associated locally iteractievly
-`docker run -it -v $(pwd)/path/to/code:/code  cs61a-scheme`
+`docker run -it -v $(pwd)/[/path/to/your/code]:/usr/src/app  cs61a-scheme`
+
+4. Run stk with berkely extension (run inside of docker container)
+`stk -load load-simply`
 
 
 
