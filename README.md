@@ -1,5 +1,9 @@
 # Berkeley CS61a
 
+# How to build Scheme Docker Image on M1 MBP
+`docker buildx build --platform linux/amd64 -t cs61a-scheme . `
+
+
 # How to run Scheme Via Docker
 1. Execute the docker image interactively
 `docker run -it cs61a-scheme`
