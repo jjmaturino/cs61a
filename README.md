@@ -12,19 +12,15 @@
 `docker pull ghcr.io/jjmaturino/cs61a-scheme:latest`
 
 
-# How to run Scheme Via Docker
+# 2. How to run Scheme Via Docker
 1. Execute the docker image interactively
 `docker run -it cs61a-scheme`
 
-2. Run scheme in the docker container with the ucb extension loaded
+2. Run stk with berkely extension (run inside of docker container)
 `stk -load load-simply`
 
 3. Run docker image with files associated locally iteractievly
 `docker run -it -v $(pwd)/[/path/to/your/code]:/usr/src/app  cs61a-scheme`
-
-4. Run stk with berkely extension (run inside of docker container)
-`stk -load load-simply`
-
 
 
 
