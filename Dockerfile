@@ -1,5 +1,7 @@
 FROM ubuntu:16.04
 
+LABEL org.opencontainers.image.source=https://github.com/jjmaturino/cs61a
+
 # Set environment variables
 ENV LANG=en_US.UTF-8
 
