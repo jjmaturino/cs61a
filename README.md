@@ -1,7 +1,15 @@
 # Berkeley CS61a
 
-# How to build Scheme Docker Image on M1 MBP
+
+# 1. How to get Scheme Built Image
+
+**There are two options for getting a docker image that includes the required lisp runtime**
+
+## 1.a Building Scheme Docker Image Locally (On M1 MBP)
 `docker buildx build --platform linux/amd64 -t cs61a-scheme . `
+
+## 1.b Downloading Image from Github Container Registry (gchr.io)
+`docker pull ghcr.io/jjmaturino/cs61a-scheme:latest`
 
 
 # How to run Scheme Via Docker
