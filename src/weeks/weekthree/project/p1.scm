@@ -59,9 +59,11 @@
   )
 )
 
-; otherwise we want to recursively interate through the collection of cards
 ; getRank returns the rank associated with a card
 (define getRank (lambda(card)(first card)))
+
+; getSuit returns the suit associated with a card
+(define getSuit (lambda(card)(bf card)))
 
 ; Need to sus this out.
 (define getValue (lambda(rank)
