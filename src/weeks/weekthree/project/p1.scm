@@ -10,6 +10,13 @@
      (equal? 19 (best-total '(ad 8s)))
      (equal? 14 (best-total '(ad 8s 5h)))
      (equal? 21 (best-total '(ad as 9h)))
+
+     ; added to test joker addition
+     (equal? 21 (best-total '(kd sj)))
+     (equal? 21 (best-total '(sj kd)))
+     (equal? 11 (best-total '(sj)))
+     (equal? 14 (best-total '(3c sj)))
+
    )
   )
 )
