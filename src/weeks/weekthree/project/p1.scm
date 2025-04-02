@@ -65,12 +65,52 @@
 ; getSuit returns the suit associated with a card
 (define getSuit (lambda(card)(bf card)))
 
-; Need to sus this out.
+; Joker proposition added
 (define getValue (lambda(rank)
                    (cond 
                      ((equal? rank 'a) 'ace)
+                     ((equal? rank 's) 'joker)
                      ((member? rank pictureCards) 10)
                      (else rank)
                    )
                   )
+)
+
+
+; This function takes a hand, and currentsum.
+; then it loops from 1...11
+; and calls the helper function for every iteration
+; if the value returned is greater than the previous greater value and the value is less than 22,
+; we update the agregate value
+(define ITERATIONSTART 1)
+(define ITERATIONEND 12)
+(define STARTINGLARGESTSUM 0)
+
+(define testjokervalue 
+  (lambda()
+    (and
+      (equal? 21 (jokervalue '(kd) 0))
+      (equal? 21 (jokervalue '(kd) 9))
+      (equal? 21 (jokervalue '(kd) 9))
+  )
+  )
+)
+
+(define (jokervalue hand currentsum)
+  (jokerhelper ITERATIONSTART STARTINGLARGESTSUM hand currentsum )
+)
+
+(define (jokerhelper iteration largestvalidsum hand currentsum)
+  (if (>= iteration ITERATIONEND)
+    largestvalidsum
+    (let
+      (
+       (branchresult (best-total-helper hand (+ iteration currentsum)))
+      )
+      (if (and (<= branchresult blackjackCeiling) (> branchresult largestvalidsum))
+        (jokerhelper (+ 1 iteration) branchresult hand currentsum)
+        (jokerhelper (+ 1 iteration) largestvalidsum hand currentsum)
+      )
+    )
+  )
 )
