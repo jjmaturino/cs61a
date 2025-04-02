@@ -19,13 +19,15 @@
 (define pictureCards '(J Q K)) ; potentially sanitize
 
 (define (best-total hand)
-  (helper hand startingSum)
+  (best-total-helper hand startingSum)
 )
 
 
-; helper function used to calcuate the best total sum of a hand in black jack
+; Jocker branching added.... wonder how this would be converted to an iterative approach as well...
+
+; best-total-helper function used to calcuate the best total sum of a hand in black jack
 ; Challenge; write this in an iterative process; Hint... You can always add more later on
-(define (helper currentHand currentSum)( 
+(define (best-total-helper currentHand currentSum)( 
   if (or (empty? currentHand) (> currentSum blackjackCeiling)) ; base case
        currentSum
        (
@@ -33,27 +35,30 @@
         (cardValue (getValue (getRank (first currentHand))))
         (remainingHand (bf currentHand)))
 
-        (if (equal? cardValue 'ace)
-          (let (
-                (aceAsOne (helper remainingHand (+ currentSum 1)))
-                (aceAsEleven (helper remainingHand (+ currentSum 11)))
-               )
-              (cond 
-                ; both are less than ceiling, picks largest of two
-                ((and (<= aceAsOne blackjackCeiling) (<= aceAsEleven blackJackCeiling)) 
-                 if (>= aceAsOne aceAsEleven)
-                  aceAsOne
-                  aceAsEleven
+        (cond 
+          ((equal? cardValue 'ace)
+            (let (
+                 (aceAsOne (best-total-helper remainingHand (+ currentSum 1)))
+                 (aceAsEleven (best-total-helper remainingHand (+ currentSum 11)))
                 )
-                ; picks valid branch
-                ((<= aceAsOne blackjackCeiling) aceAsOne)
-                ((<= aceAsEleven blackjackCeiling) aceAsEleven)
-                ; all are invalid
-                (else aceAsOne) 
-              )
+               (cond 
+                 ; both are less than ceiling, picks largest of two
+                 ((and (<= aceAsOne blackjackCeiling) (<= aceAsEleven blackJackCeiling)) 
+                  if (>= aceAsOne aceAsEleven)
+                   aceAsOne
+                   aceAsEleven
+                 )
+                 ; picks valid branch
+                 ((<= aceAsOne blackjackCeiling) aceAsOne)
+                 ((<= aceAsEleven blackjackCeiling) aceAsEleven)
+                 ; all are invalid
+                 (else aceAsOne) 
+               )
+            ))
+          ((equal? cardValue 'joker)
+           (jokervalue remainingHand currentSum)
           )
-
-          (helper remainingHand (+ cardValue currentSum))
+          (else (best-total-helper remainingHand (+ cardValue currentSum)))
       )
     )
   )
