@@ -1,4 +1,4 @@
-; Exercise 2.2 from SICP
+; Exercise 2.1 from SICP
 
 (define (make-rat n d)
   (cond
