@@ -9,3 +9,15 @@
     )
   )
 )
+
+(define (reverse l)
+  (define (reverse-helper currentlist reversedlist)
+    (if (null? currentlist)
+      reversedlist
+      (reverse-helper (cdr currentlist) (cons (car currentlist) reversedlist)) 
+    )
+  )
+
+  ; calls reverse helper
+  (reverse-helper l nil)
+)
