@@ -1,6 +1,32 @@
 ; Exercise 2.20 SCIP
 
+(define (same-parity-iter-implement p . l)
+  (define parity (even? p))
+  (define (check-parity i)(equal? parity (even? i)))
 
+  (define (add-number? l cn)
+    (if (check-parity cn)
+      (append-element l cn)
+      l
+    )
+  )
+
+  (define (helper cl nl)
+    (if (empty? cl)
+      nl
+      (helper (cdr cl) (add-number? nl (car cl)))
+    )
+  )
+
+  (helper l  (list p))
+)
+
+(define (append-element l el)
+  (if (null? l)
+    (cons  el '())
+    (cons (car l) (append-element (cdr l) el))
+  )
+)
 
 
 
