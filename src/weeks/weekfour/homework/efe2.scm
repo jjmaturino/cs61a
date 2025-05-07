@@ -29,12 +29,17 @@
   )
 )
 
-; - subtraction
-(define -
-  (lambda (n m)
-    (- n m)
-  )
+(define (predecessor n)
+  (define (pair a b)(lambda(f)(f a b)))
+  (define (first p)(p (lambda(a b) a)))
+  (define (second p)(p (lambda(a b) b)))
+  (define (shift p)(pair (second p) (add-1 (second p))))
+
+  (first ((n shift) (pair zero zero)))
 )
+
+; - subtraction
+(define (- n m) ((m predecessor) n))
 
 ; * multiplication
 (define (* n m)
@@ -52,6 +57,7 @@
   (define id (lambda(x) x))
   ((m n) id)
 )
+
 
 ; converts church integers to numeric representations
 (define (church-to-int n)
