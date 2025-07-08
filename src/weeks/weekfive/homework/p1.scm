@@ -4,3 +4,6 @@
 
 ; evals to 
 ; ( 1 ( 2 ( 3 4) )
+
+; I did not draw the box-pointer diagram
+; I did not draw the tree representation 
