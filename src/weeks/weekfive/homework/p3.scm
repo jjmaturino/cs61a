@@ -265,3 +265,5 @@
 ; In hindesight, this breaks data abstractions because we aren't exclusively using the selector methods.
 ; this is shown by the fact that a change in how we implement these compound data structures, would cause wide ranging effects on the 
 ; methods that interact with these data structures
+
+
