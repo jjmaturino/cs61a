@@ -85,8 +85,8 @@
                   (make-branch 10 100) 
                   (make-branch 1
                       (make-mobile 
-                        (make-branch 14 50) 
-                        (make-branch 14 25))
+                        (make-branch 4 50) 
+                        (make-branch 4 25))
                   )
                 )
 )
@@ -109,6 +109,10 @@
                   (make-branch 10 14)))
 
 
+(define mobile4-1 (make-mobile 
+                  '() 
+                  (make-branch 10 14)))
+
 
 
 (define test-total-weight
@@ -118,6 +122,7 @@
       (equal? 175 (total-weight mobile2))
       (equal? 23 (total-weight mobile3))
       (equal? 27 (total-weight mobile4))
+      (equal? 14 (total-weight mobile4-1))
     )
   )
 )
@@ -126,10 +131,137 @@
 ; a mobile with no submobiles will return it's weight
 ; a mobile has no submobiles  if it's left branch and right branch points to only weights
 
-(define (total-weight mobile)
-  (
-   if (number? (branch-structure mobile)) ; if branch structure is not a list (i.e a submobile)
-    (branch-structure mobile)
-    (reduce + (map total-weight (filter ( lambda(branch)(and (pair? branch) (not (equal? '() branch)))) mobile)))
+(define (branch-weight branch)
+  (let ((structure (branch-structure branch)))
+    (cond 
+      ((null? branch) 0)
+      ((number? structure) structure)
+      (else (total-weight structure))
+    )
   )
 )
+
+(define (total-weight mobile)
+  (reduce + (map branch-weight (filter (lambda(branch)(pair? branch )) mobile)))
+)
+
+; p3; balanced predicate function
+
+(define balancedmobile (make-mobile
+                         (make-branch 5 4)
+                         (make-branch 4 5)
+                        )
+)
+
+
+(define unbalancedmobile (make-mobile
+                          (make-branch 5 5)
+                          (make-branch 1 5)
+                        )
+)
+
+
+(define complex-unbalancedmobile (make-mobile
+                                  (make-branch 5 
+                                               (make-mobile
+                                                 (make-branch 10 10)
+                                                 (make-branch 5 7)
+                                                 ))
+
+                                  (make-branch 4 5)
+                                  )
+)
+
+
+
+(define test-is-balanced?
+  (lambda()
+    (and
+      (equal? #t (is-balanced? balancedmobile))
+      (equal? #f (is-balanced? unbalancedmobile))
+      (equal? #f (is-balanced? complex-unbalancedmobile))
+    )
+  )
+)
+
+(define (is-mobile? object)
+  (pair? (cdr object) and  )
+)
+
+(define (is-branch? object)
+  (number? (car object))
+)
+
+
+(define (get-torque branch)
+  (let
+    (
+      (structure (branch-structure branch))
+      (blength (branch-length branch))
+    )
+    (cond
+      ((null? branch) 0)
+      ((number? structure) (* blength structure))
+      (else (* blength (total-torque structure)))
+    )
+  )
+)
+
+
+(define (total-torque mobile)
+    (reduce + (map get-torque (filter (lambda(child)(pair? child)) mobile)))
+)
+
+
+(define (level-balanced? mobile)
+  (let
+    (
+     (left-mobile (get-torque (left-branch mobile)))
+     (right-mobile (get-torque (right-branch mobile))))
+  
+    (equal? left-mobile right-mobile)
+  )
+)
+
+
+
+(define branches-balanced?
+  (lambda (mobile)
+    (and
+      (branch-balanced? (left-branch mobile))
+      (branch-balanced? (right-branch mobile))
+    )
+    
+  )
+)
+
+
+
+(define (branch-balanced? branch)
+  (let ((structure (branch-structure branch)))
+    (if (number? structure)
+      #t
+      (is-balanced? structure)
+    )
+  )
+)
+
+
+(define (is-balanced? mobile)
+  (and 
+    (branches-balanced? mobile)
+    (level-balanced? mobile)
+  )
+)
+
+
+;;---
+; p4 
+
+; If we changed the implementation from a list to a cons implementation, we would have to change alot.
+; 
+; This is due to using list comprhension to traverse the list.
+;
+; In hindesight, this breaks data abstractions because we aren't exclusively using the selector methods.
+; this is shown by the fact that a change in how we implement these compound data structures, would cause wide ranging effects on the 
+; methods that interact with these data structures
