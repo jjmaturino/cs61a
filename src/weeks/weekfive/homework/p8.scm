@@ -1,5 +1,5 @@
 (load "homework/p7") ; -> accumulate n from 2.36
-; 2.37
+; 2.37 -> This is one of my favorite exercises so far
 
 (define (dot-product v w)
   (accumulate + 0 (map * v w)))
