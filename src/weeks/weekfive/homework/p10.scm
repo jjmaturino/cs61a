@@ -12,8 +12,8 @@
   (cond 
     ((and (null? x) (null? y)) #t) ;; Base case: both empty lists
     ((or (null? x) (null? y)) #f) ;; One empty, one not
-    ((or (not (list? x)) (not (list? y))) #f) ;; One is list, one is symbol  
     ((and (not (list? x)) (not (list? y))) (checkSymbol x y)) ;; Both are symbols 
+    ((or (not (list? x)) (not (list? y))) #f) ;; One is list, one is symbol  
     (else (and (equalHW? (car x) (car y))
                (equalHW? (cdr x) (cdr y))))))     ;; Both are lists: check first elements and rest
 
