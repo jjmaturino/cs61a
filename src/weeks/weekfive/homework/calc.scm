@@ -27,4 +27,5 @@
 	((eq? fn '/) (cond ((null? args) (error "Calc: no args to /"))
 			   ((= (length args) 1) (/ (car args)))
 			   (else (/ (car args) (accumulate * 1 (cdr args))))))
+	((symbol? fn) (apply (eval fn) args))
 	(else (error "Calc: bad operator:" fn))))
