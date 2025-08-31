@@ -128,6 +128,54 @@
 ;; Your code goes here
 ;;
 
+
+;;
+;; Exercise 2.44: Define the procedure up-split used by corner-split. It is similar to right-split, except that it switches the roles of below and beside.
+;;
+(define (up-split painter n)
+  (if (= n 0)
+      painter
+      (let ((smaller (up-split painter 
+                                  (- n 1))))
+        (below painter 
+                (beside smaller smaller)))))
+;;
+;; Exercise 2.45: Right-split and up-split can be expressed as instances of a general splitting operation.
+;; 
+
+(define (split s1 s2)
+  (define (helper painter n)
+    (if (= n 0)
+      painter
+      (let ((smaller (helper painter 
+                                  (- n 1))))
+        (s1 painter 
+                (s2 smaller smaller)))
+    ) 
+  )
+  
+  helper
+)
+
+
+;; 
+;; Exercise 2.46:
+;; 
+
+;; Exercise 2.47:
+;; 
+;; Exercise 2.48:
+;;
+;; Exercise 2.49:
+;;
+;; Exercise 2.50:
+;;
+;; Exercise 2.51:
+;;
+;; Exercise 2.52:
+
+
+
 (define full-frame (make-frame (make-vect -0.5 -0.5)
 			       (make-vect 2 0)
 			       (make-vect 0 2)))
