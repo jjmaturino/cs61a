@@ -157,10 +157,36 @@
   helper
 )
 
-
 ;; 
 ;; Exercise 2.46:
 ;; 
+(define (make-vect x y)
+  (list x y)
+)
+
+(define (xcor-vect v)(car v))
+(define (ycor-vect v)(cadr v))
+
+(define (add v1 v2)
+  (make-vect
+    (+ (xcor-vect v1) (xcor-vect v2))
+    (+ (ycor-vect v1) (ycor-vect v2))
+  )
+)
+
+(define (subtract v1 v2)
+  (make-vect
+    (- (xcor-vect v1) (xcor-vect v2))
+    (- (ycor-vect v1) (ycor-vect v2))
+  )
+)
+
+(define (multi s v)
+  (make-vect
+    (* s (xcor-vect v))
+    (* s (ycor-vect v))
+  )
+)
 
 ;; Exercise 2.47:
 ;; 
