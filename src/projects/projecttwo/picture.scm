@@ -160,12 +160,9 @@
 ;; 
 ;; Exercise 2.46:
 ;; 
-(define (make-vect x y)
-  (list x y)
-)
-
-(define (xcor-vect v)(car v))
-(define (ycor-vect v)(cadr v))
+(define make-vect cons)
+(define xcor-vect car)
+(define ycor-vect cdr)
 
 (define (add-vect v1 v2)
   (make-vect
