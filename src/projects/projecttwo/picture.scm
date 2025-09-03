@@ -167,21 +167,21 @@
 (define (xcor-vect v)(car v))
 (define (ycor-vect v)(cadr v))
 
-(define (add v1 v2)
+(define (add-vect v1 v2)
   (make-vect
     (+ (xcor-vect v1) (xcor-vect v2))
     (+ (ycor-vect v1) (ycor-vect v2))
   )
 )
 
-(define (subtract v1 v2)
+(define (sub-vect v1 v2)
   (make-vect
     (- (xcor-vect v1) (xcor-vect v2))
     (- (ycor-vect v1) (ycor-vect v2))
   )
 )
 
-(define (multi s v)
+(define (scale-vect s v)
   (make-vect
     (* s (xcor-vect v))
     (* s (ycor-vect v))
@@ -194,19 +194,19 @@
 (define (make-frame origin edge1 edge2)
   (list origin edge1 edge2))
 
-(define (origin f)(car f))
-(define (edge1 f)(cadr f))
-(define (edge2 f)(caddr f))
+(define (origin-frame f)(car f))
+(define (edge1-frame f)(cadr f))
+(define (edge2-frame f)(caddr f))
 
 
 (define (make-frame origin edge1 edge2)
-  (cons origin (cons edge1 edge2)))
+  (cons origin (cons edge1 (cons edge2 '()))))
 
 (define (origin f)(car f))
 (define (edge1 f)(cadr f))
 (define (edge2 f)(cddr f))
 
-
+;;
 ;; Exercise 2.48:
 ;;
 ;; Exercise 2.49:
