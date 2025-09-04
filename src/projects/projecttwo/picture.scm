@@ -285,15 +285,115 @@
 ;; Exercise 2.50:
 ;;
 
+(define (flip-horiz painter)
+  (transform-painter painter
+                     (make-vect 1.0 0.0)
+                     (make-vect 0.0 0.0)
+                     (make-vect 1.0 1.0)))
+
+(define (rotate180 painter)
+  (rotate90 (rotate90 painter))
+)
+
+(define (rotate270 painter)
+  (rotate90 (rotate180 painter))
+)
+
+
+
 ;;
 ;; Exercise 2.51:
 ;;
+
+;; analagous to beside
+(define (below painter1 painter2)
+  (let ((split-point (make-vect 0.0 0.5)))
+    (let ((paint-left  (transform-painter 
+                        painter1
+                        (make-vect 0.0 0.0)
+                        (make-vect 1.0 0.0)
+                        split-point
+                        ))
+          (paint-right (transform-painter
+                        painter2
+                        split-point
+                        (make-vect 1.0 0.5)
+                        (make-vect 0.0 1.0))))
+      (lambda (frame)
+        (paint-left frame)
+        (paint-right frame)))))
+
+;; with beside and rotations
+(define (below-alt painter1 painter2)
+  (rotate90 (beside (rotate270 painter1) 
+                    (rotate270 painter2))))
 
 ;;
 ;; Exercise 2.52:
 ;;
 
+(define wave-segments
+  (list
+    ;; Body outline
+    (make-segment (make-vect 0.2 0.0) (make-vect 0.4 0.4))  ; left leg
+    (make-segment (make-vect 0.4 0.4) (make-vect 0.3 0.5))  ; left torso
+    (make-segment (make-vect 0.3 0.5) (make-vect 0.1 0.3))  ; left arm
+    (make-segment (make-vect 0.3 0.5) (make-vect 0.4 0.6))  ; neck
+    (make-segment (make-vect 0.4 0.6) (make-vect 0.3 0.7))  ; head left
+    (make-segment (make-vect 0.3 0.7) (make-vect 0.4 0.8))  ; head top left
+    (make-segment (make-vect 0.4 0.8) (make-vect 0.6 0.8))  ; head top
+    (make-segment (make-vect 0.6 0.8) (make-vect 0.7 0.7))  ; head top right
+    (make-segment (make-vect 0.7 0.7) (make-vect 0.6 0.6))  ; head right
+    (make-segment (make-vect 0.6 0.6) (make-vect 0.7 0.5))  ; neck right
+    (make-segment (make-vect 0.7 0.5) (make-vect 0.9 0.3))  ; right arm
+    (make-segment (make-vect 0.7 0.5) (make-vect 0.6 0.4))  ; right torso
+    (make-segment (make-vect 0.6 0.4) (make-vect 0.8 0.0))  ; right leg
+    ))
 
+(define wave (segments->painter wave-segments))
+
+;; ENHANCED WAVE with smile and more details
+(define enhanced-wave-segments
+  (append wave-segments
+    (list
+      ;; Add a smile
+      (make-segment (make-vect 0.42 0.72) (make-vect 0.45 0.70)) ; smile left
+      (make-segment (make-vect 0.45 0.70) (make-vect 0.55 0.70)) ; smile middle
+      (make-segment (make-vect 0.55 0.70) (make-vect 0.58 0.72)) ; smile right
+      
+      ;; Add eyes
+      (make-segment (make-vect 0.43 0.75) (make-vect 0.45 0.75)) ; left eye
+      (make-segment (make-vect 0.55 0.75) (make-vect 0.57 0.75)) ; right eye
+      
+      ;; Add hands (little circles approximated with short segments)
+      (make-segment (make-vect 0.09 0.32) (make-vect 0.11 0.32)) ; left hand
+      (make-segment (make-vect 0.10 0.31) (make-vect 0.10 0.33)) ; left hand
+      (make-segment (make-vect 0.89 0.32) (make-vect 0.91 0.32)) ; right hand  
+      (make-segment (make-vect 0.90 0.31) (make-vect 0.90 0.33)) ; right hand
+      
+      ;; Add feet
+      (make-segment (make-vect 0.18 0.0) (make-vect 0.22 0.0))   ; left foot
+      (make-segment (make-vect 0.78 0.0) (make-vect 0.82 0.0))   ; right foot
+      )))
+
+(define enhanced-wave (segments->painter enhanced-wave-segments))
+
+
+(define (corner-split-modified painter n)
+  (if (= n 0)
+      painter
+      (let ((up (up-split painter (- n 1)))
+            (right (right-split painter (- n 1))))
+        (let ((top-left up)                      
+              (bottom-right right)              
+              (corner (corner-split-modified painter (- n 1))))
+          (beside (below painter top-left)
+                  (below bottom-right corner))))))
+
+
+(define square-limit-outward
+  (square-of-four identity flip-horiz flip-vert rotate180))
+;;;
 
 (define full-frame (make-frame (make-vect -0.5 -0.5)
 			       (make-vect 2 0)
