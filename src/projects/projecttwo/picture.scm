@@ -308,20 +308,20 @@
 ;; analagous to beside
 (define (below painter1 painter2)
   (let ((split-point (make-vect 0.0 0.5)))
-    (let ((paint-left  (transform-painter 
+    (let ((paint-above  (transform-painter 
                         painter1
                         (make-vect 0.0 0.0)
                         (make-vect 1.0 0.0)
                         split-point
                         ))
-          (paint-right (transform-painter
+          (paint-below (transform-painter
                         painter2
                         split-point
                         (make-vect 1.0 0.5)
                         (make-vect 0.0 1.0))))
       (lambda (frame)
-        (paint-left frame)
-        (paint-right frame)))))
+        (paint-above frame)
+        (paint-below frame)))))
 
 ;; with beside and rotations
 (define (below-alt painter1 painter2)
