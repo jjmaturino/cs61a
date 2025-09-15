@@ -50,6 +50,7 @@
   (cond ((constant? exp) exp)
 	((symbol? exp) (EVAL EXP))	; use underlying Scheme's EVAL
 	((quote-exp? exp) (cadr exp))
+  ((and-exp? exp) (eval-and (cdr exp)))
 	((if-exp? exp)
 	 (if (eval-1 (cadr exp))
 	     (eval-1 (caddr exp))
@@ -93,6 +94,17 @@
 (define quote-exp? (exp-checker 'quote))
 (define if-exp? (exp-checker 'if))
 (define lambda-exp? (exp-checker 'lambda))
+(define and-exp? (exp-checker 'and))
+
+(define (eval-and args)
+  (cond ((null? args) #t)           
+        ((null? (cdr args)) (eval-1 (car args)))     
+        (else 
+         (let ((first-val (eval-1 (car args))))
+           (if first-val
+              (eval-and (cdr args))
+              #f
+               )))))
 
 
 ;; SUBSTITUTE substitutes actual arguments for *free* references to the
